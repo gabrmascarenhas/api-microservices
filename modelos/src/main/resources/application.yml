@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: modelos
+server:
+  address: ${BIND_ADDRESS:127.0.0.1}
+  port: 8662
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+    registry-fetch-interval-seconds: 5
+  instance:
+    prefer-ip-address: false
+    hostname: ${SERVICE_HOST:localhost}
+    lease-renewal-interval-in-seconds: 5
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+app:
+  internal-key: ${INTERNAL_KEY:demonstracao-local}

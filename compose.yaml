@@ -1,0 +1,39 @@
+services:
+  eureka:
+    build: ./eureka-server
+    ports: ["127.0.0.1:8761:8761"]
+    environment:
+      BIND_ADDRESS: 0.0.0.0
+  identidade:
+    build: ./identidade
+    environment: &env
+      SERVICE_HOST: identidade
+      BIND_ADDRESS: 0.0.0.0
+      EUREKA_URL: http://eureka:8761/eureka/
+      INTERNAL_KEY: ${INTERNAL_KEY:?Defina INTERNAL_KEY no ambiente}
+    depends_on: [eureka]
+  modelos:
+    build: ./modelos
+    environment:
+      <<: *env
+      SERVICE_HOST: modelos
+    depends_on: [eureka, identidade]
+  documentos:
+    build: ./documentos
+    environment:
+      <<: *env
+      SERVICE_HOST: documentos
+    depends_on: [eureka, identidade, modelos, acesso]
+  acesso:
+    build: ./acesso
+    environment:
+      <<: *env
+      SERVICE_HOST: acesso
+    depends_on: [eureka, identidade]
+  gateway:
+    build: ./gateway
+    environment:
+      <<: *env
+      SERVICE_HOST: gateway
+    ports: ["127.0.0.1:8080:8080"]
+    depends_on: [eureka, identidade, modelos, documentos, acesso]

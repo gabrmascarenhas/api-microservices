@@ -1,0 +1,21 @@
+.execucao/
+**/target/
+.idea/
+*.iml
+.DS_Store
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+
+# Materiais locais da entrega acadêmica
+/Plano de Trabalho*.pdf
+/identidade/Plano de Trabalho.pdf
+/Resumo.txt
+/identidade/README.md
+/modelos/README.md
+/documentos/README.md
+/acesso/README.md
+/gateway/README.md
+/eureka-server/README.md
