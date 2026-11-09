@@ -7,4 +7,9 @@ import org.springframework.stereotype.Service;import org.springframework.web.ser
  public List<Saida> listar(){return repo.listar().stream().map(this::saida).toList();}
  public Saida buscar(String id){return saida(repo.buscar(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Modelo não encontrado")));}
  private Saida saida(Modelo m){return new Saida(m.id(),m.nome(),m.conteudo(),m.versao());}
+
+ public Saida revisar(String id, Revisao revisao) {
+     return saida(repo.revisar(id,revisao.conteudo()).orElseThrow(() ->
+             new ResponseStatusException(HttpStatus.NOT_FOUND,"Modelo não encontrado")));
+ }
 }

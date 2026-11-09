@@ -6,4 +6,11 @@ import org.springframework.web.bind.annotation.*;import jakarta.validation.Valid
  @PostMapping @ResponseStatus(org.springframework.http.HttpStatus.CREATED) public Saida criar(@RequestHeader(value="Authorization",required=false) String token,@Valid @RequestBody Entrada d){client.user(token);return service.criar(d);}
  @GetMapping public List<Saida> listar(@RequestHeader(value="Authorization",required=false) String token){client.user(token);return service.listar();}
  @GetMapping("/{id}") public Saida buscar(@PathVariable String id,@RequestHeader(value="Authorization",required=false) String token){client.user(token);return service.buscar(id);}
+
+ @PutMapping("/{id}") public Saida revisar(@PathVariable String id,
+         @RequestHeader(value="Authorization",required=false) String token,
+         @Valid @RequestBody Revisao revisao) {
+     client.user(token);
+     return service.revisar(id,revisao);
+ }
 }

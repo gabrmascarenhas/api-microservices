@@ -13,6 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
   catch(HttpClientErrorException e){throw new ResponseStatusException(e.getStatusCode(),"Requisição recusada pelo serviço de origem");}
   catch(RestClientException e){throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"Serviço necessário indisponível");}
  }
- public String user(String token){return call("http://identidade/interno/sessao",HttpMethod.GET,null,token,User.class).id();}
- public record User(String id,String nome,String email){}
+ public String user(String token){return usuario(token).id();}
+ public User usuario(String token) {
+  return call("http://identidade/interno/sessao",HttpMethod.GET,null,token,User.class);
+ }
+ public record User(String id,String nome,String email,String perfil){}
 }

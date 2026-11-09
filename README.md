@@ -1,6 +1,6 @@
 # API de Gerenciamento de Documentos
 
-MVP acadêmico de um sistema de gerenciamento de documentos, organizado em quatro microserviços Spring Boot, com API Gateway e descoberta de serviços pelo Eureka Server.
+Sistema acadêmico de gerenciamento de documentos, organizado em quatro microserviços Spring Boot, com API Gateway e descoberta de serviços pelo Eureka Server.
 
 O fluxo implementado permite cadastrar uma conta, autenticar, cadastrar um modelo e criar um documento a partir dele. A consulta individual verifica se o documento pertence ao usuário autenticado.
 
@@ -36,7 +36,7 @@ O Gateway é a entrada das APIs públicas. O Eureka mantém o registro dos quatr
 | `documentos` | Documentos | 8663 | Criação e consulta de documentos pessoais |
 | `acesso` | Acesso | 8664 | Autorização pela propriedade do documento |
 
-Cada serviço de domínio possui camadas `controller`, `service`, `repository`, `model` e `dto`, além de clientes HTTP e configuração. Os repositórios mantêm os dados em memória, sem tabelas compartilhadas.
+Cada serviço de domínio possui camadas `controller`, `service`, `repository`, `model` e `dto`, além de clientes HTTP e configuração. Cada serviço de domínio possui seu próprio arquivo de dados. Sessões ficam em memória.
 
 ## Tecnologias
 
@@ -87,7 +87,7 @@ O iniciador local usa um shell POSIX; no Windows, utilize WSL. Para compilar sep
 5. Abra o documento na lista para executar a autorização pelo serviço Acesso.
 6. Abra o Eureka para visualizar `IDENTIDADE`, `MODELOS`, `DOCUMENTOS`, `ACESSO` e `GATEWAY` registrados.
 
-Não há credenciais predefinidas. O conteúdo do modelo é copiado para o documento, que guarda a versão de origem. Neste MVP, os modelos são cadastrados na versão 1; a edição e o versionamento do catálogo ainda não estão implementados.
+Não há credenciais predefinidas. O conteúdo do modelo é copiado para o documento, que guarda a versão de origem. O modelo começa na versão 1; cada revisão incrementa a versão atual. Documentos anteriores mantêm a versão e a cópia do conteúdo de origem.
 
 ## APIs públicas
 
@@ -104,7 +104,7 @@ Todas as rotas abaixo são acessadas pelo Gateway na porta **8080**.
 | POST | `/api/documentos` | Criar documento a partir de um modelo | Sim |
 | GET | `/api/documentos` | Listar documentos do usuário | Sim |
 | GET | `/api/documentos/{id}` | Consultar documento com autorização | Sim |
-| GET | `/api/acesso/status` | Descrever a regra do MVP | Não |
+| GET | `/api/acesso/status` | Descrever a regra de leitura e edição | Não |
 
 Cadastro de usuário:
 
@@ -152,7 +152,7 @@ Com os serviços iniciados e descobertos pelo Eureka, em outro terminal:
 python3 testar_mvp.py
 ```
 
-O teste integrado valida os cinco registros no Eureka, a página inicial, cadastro e login, criação de modelo e documento, listagem por proprietário e rejeição de credenciais inválidas, duplicidade e acesso por outro usuário. Ele cria registros de teste em memória.
+O teste integrado valida os cinco registros no Eureka, a página inicial, cadastro e login, criação de modelo e documento, listagem por proprietário e rejeição de credenciais inválidas, duplicidade e acesso por outro usuário. Execute os testes com uma pasta de dados reservada para testes.
 
 ## Docker Compose
 
@@ -185,19 +185,57 @@ A configuração Docker está disponível; a validação integrada desta versão
 
 O Compose exige `INTERNAL_KEY` e configura os nomes dos serviços na rede Docker. A chave demonstrativa padrão existe para execução local; use uma chave própria se alterar o ambiente.
 
-## Limites e próximas etapas
+## Funcionalidades e padrões de projeto
 
-- Dados e sessões ficam em memória: reiniciar os serviços elimina os registros correspondentes.
-- Tokens de sessão expiram após uma hora. O botão Sair descarta o token no navegador; não implementa revogação no servidor.
-- A autorização atual permite consulta individual apenas pelo proprietário. Perfis administrativos, aprovação, bloqueio de conta e compartilhamento ainda são evoluções.
-- A interface atual usa HTML e JavaScript, sem React.
-- Persistência, exportação TXT/PDF e os nove padrões GoF completos previstos para a evolução ainda não estão implementados.
+Pelo Gateway, cadastre um modelo, crie um relatório ou contrato e publique uma revisão do modelo.
+O documento antigo conserva a cópia e a versão de origem. O proprietário pode editar o documento,
+baixar TXT ou PDF e compartilhar o código do documento. Um segundo usuário solicita leitura
+pelo código. O proprietário ou o administrador aprova ou recusa a solicitação.
+A leitura concedida permite consulta e download. A edição exige que o usuário seja proprietário.
 
-Esta entrega demonstra a arquitetura e um fluxo funcional mínimo; não representa a conclusão de todos os requisitos do projeto final.
+| Padrão | Código e operação |
+| --- | --- |
+| Prototype | `PrototipoDocumento.copiar` cria um rascunho independente do modelo. |
+| Builder | `DocumentoBuilder` monta o documento com título, conteúdo e dados de origem. |
+| Factory Method | `CriadorDocumento.preparar` é especializado para relatório e contrato. O contrato inclui campos de assinatura. |
+| Adapter | `ModeloHttpAdapter` converte a resposta REST de Modelos no protótipo esperado pela criação. |
+| Proxy | `DocumentoProxy` fornece consulta protegida pelo contrato `ConsultaDocumento` para leitura, edição e exportação. |
+| Facade | `DocumentoService` coordena catálogo, criação, consulta protegida e exportação para o controller. |
+| Chain of Responsibility | `CadeiaAutorizacao` encadeia autenticação, validação da ação e avaliação da política. |
+| Interpreter | `PoliticaAcesso` avalia expressões de proprietário e concessão combinadas por OU. |
+| Strategy | `EstrategiaExportacao` seleciona TXT ou PDF na operação de download. |
+
+O perfil comum é criado pelo cadastro. Para habilitar a conta administrativa local, defina
+`ADMIN_EMAIL` e `ADMIN_SENHA` no ambiente antes da primeira inicialização. O administrador pode
+bloquear e desbloquear contas comuns. O bloqueio invalida sessões existentes. O logout revoga a sessão.
+
+### Teste do fluxo completo
+
+Com a aplicação em execução, rode:
+
+```bash
+python3 testar_fluxo_completo.py --estado /tmp/documentos-teste.json
+```
+
+Encerre e inicie os serviços novamente com os mesmos dados e confirme a recuperação:
+
+```bash
+python3 testar_fluxo_completo.py --estado /tmp/documentos-teste.json --apos-reinicio
+```
+
+Defina as mesmas variáveis de administrador ao executar o teste para verificar o bloqueio de conta.
+
+### Limites da implementação atual
+
+- Os registros duráveis ficam em arquivos JSON privados por serviço, em `.dados/` no modo local.
+  O Compose monta um volume separado para cada serviço. PostgreSQL permanece como evolução.
+- Sessões expiram após uma hora ou ao reiniciar Identidade.
+- O catálogo consulta a revisão atual de cada modelo. Os documentos conservam o conteúdo e a versão da revisão usada na criação.
+- A interface usa HTML e JavaScript. O compartilhamento é por código e aprovação de leitura.
 
 ## Documentação
 
-As decisões adotadas no MVP estão registradas em [docs/adr](docs/adr/README.md), com contexto, alternativas, consequências e evidências no código.
+As decisões da versão inicial estão registradas em [docs/adr](docs/adr/README.md), com contexto, alternativas, consequências e evidências no código.
 
 ## Base utilizada
 

@@ -6,34 +6,58 @@ services:
       BIND_ADDRESS: 0.0.0.0
   identidade:
     build: ./identidade
-    environment: &env
+    volumes: [identidade-dados:/dados]
+    environment:
       SERVICE_HOST: identidade
+      APP_DATA_DIR: /dados
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_SENHA: ${ADMIN_SENHA:-}
       BIND_ADDRESS: 0.0.0.0
       EUREKA_URL: http://eureka:8761/eureka/
       INTERNAL_KEY: ${INTERNAL_KEY:?Defina INTERNAL_KEY no ambiente}
     depends_on: [eureka]
   modelos:
     build: ./modelos
+    volumes: [modelos-dados:/dados]
     environment:
-      <<: *env
+      BIND_ADDRESS: 0.0.0.0
+      EUREKA_URL: http://eureka:8761/eureka/
+      INTERNAL_KEY: ${INTERNAL_KEY:?Defina INTERNAL_KEY no ambiente}
       SERVICE_HOST: modelos
+      APP_DATA_DIR: /dados
     depends_on: [eureka, identidade]
   documentos:
     build: ./documentos
+    volumes: [documentos-dados:/dados]
     environment:
-      <<: *env
+      BIND_ADDRESS: 0.0.0.0
+      EUREKA_URL: http://eureka:8761/eureka/
+      INTERNAL_KEY: ${INTERNAL_KEY:?Defina INTERNAL_KEY no ambiente}
       SERVICE_HOST: documentos
+      APP_DATA_DIR: /dados
     depends_on: [eureka, identidade, modelos, acesso]
   acesso:
     build: ./acesso
+    volumes: [acesso-dados:/dados]
     environment:
-      <<: *env
+      BIND_ADDRESS: 0.0.0.0
+      EUREKA_URL: http://eureka:8761/eureka/
+      INTERNAL_KEY: ${INTERNAL_KEY:?Defina INTERNAL_KEY no ambiente}
       SERVICE_HOST: acesso
+      APP_DATA_DIR: /dados
     depends_on: [eureka, identidade]
   gateway:
     build: ./gateway
     environment:
-      <<: *env
+      BIND_ADDRESS: 0.0.0.0
+      EUREKA_URL: http://eureka:8761/eureka/
+      INTERNAL_KEY: ${INTERNAL_KEY:?Defina INTERNAL_KEY no ambiente}
       SERVICE_HOST: gateway
     ports: ["127.0.0.1:8080:8080"]
     depends_on: [eureka, identidade, modelos, documentos, acesso]
+
+volumes:
+  identidade-dados:
+  modelos-dados:
+  documentos-dados:
+  acesso-dados:

@@ -19,3 +19,5 @@ __pycache__/
 /acesso/README.md
 /gateway/README.md
 /eureka-server/README.md
+
+.dados/
