@@ -11,11 +11,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ExportacaoPdf implements EstrategiaExportacao {
+
     @Override
     public Arquivo exportar(Documento documento) throws IOException {
-        try (var pdf = new PDDocument();
-             var saida = new ByteArrayOutputStream();
-             var recurso = ExportacaoPdf.class.getResourceAsStream("/fonts/DejaVuSans.ttf")) {
+        try (
+            var pdf = new PDDocument();
+            var saida = new ByteArrayOutputStream();
+            var recurso = ExportacaoPdf.class.getResourceAsStream("/fonts/DejaVuSans.ttf")
+        ) {
             if (recurso == null) {
                 throw new IOException("Fonte para exportação PDF indisponível");
             }
@@ -29,10 +32,10 @@ public class ExportacaoPdf implements EstrategiaExportacao {
                     String letra = new String(Character.toChars(cp));
                     float medida;
                     try {
-                        medida = fonte.getStringWidth(letra) * 11 / 1000;
+                        medida = (fonte.getStringWidth(letra) * 11) / 1000;
                     } catch (IllegalArgumentException e) {
                         letra = "?";
-                        medida = fonte.getStringWidth(letra) * 11 / 1000;
+                        medida = (fonte.getStringWidth(letra) * 11) / 1000;
                     }
                     if (largura + medida > 500) {
                         linhas.add(trecho.toString());
@@ -52,7 +55,10 @@ public class ExportacaoPdf implements EstrategiaExportacao {
                     escrita.setFont(fonte, 11);
                     escrita.setLeading(15);
                     escrita.newLineAtOffset(48, 744);
-                    for (String linha : linhas.subList(inicio, Math.min(inicio + 47, linhas.size()))) {
+                    for (String linha : linhas.subList(
+                        inicio,
+                        Math.min(inicio + 47, linhas.size())
+                    )) {
                         escrita.showText(linha);
                         escrita.newLine();
                     }

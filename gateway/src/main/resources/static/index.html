@@ -1,14 +1,210 @@
-<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gerenciamento de Documentos</title>
-<style>body{font:16px system-ui;background:#f3f5f8;color:#182638;margin:0}main{max-width:1000px;margin:auto;padding:32px}h1{font-size:28px}section{background:white;padding:22px;border:1px solid #dce2ea;border-radius:8px;margin:18px 0}label{display:block;margin:10px 0}input,textarea,select{box-sizing:border-box;width:100%;padding:10px;border:1px solid #bac5d3;border-radius:4px;font:inherit}button{padding:10px 18px;border:0;border-radius:4px;background:#244f86;color:white;cursor:pointer;margin:8px 6px 0 0}button:disabled{opacity:.5}pre{white-space:pre-wrap;background:#f3f5f8;padding:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}#mensagem{min-height:24px;white-space:pre-wrap}li{margin:12px 0}@media(max-width:700px){.grid{grid-template-columns:1fr}}</style>
-<main><h1>Gerenciamento de Documentos</h1><p>Crie documentos a partir de modelos, gerencie o acesso e exporte em TXT ou PDF.</p><p><a href="http://localhost:8761" target="_blank" rel="noopener">Abrir painel Eureka</a></p><p id="mensagem" role="status" aria-live="polite"></p>
-<section id="autenticacao"><h2>Acessar sistema</h2><form id="login"><label>Email<input id="email" type="email" required maxlength="200" autocomplete="username"></label><label>Senha<input id="senha" type="password" required minlength="8" maxlength="72" autocomplete="current-password"></label><button>Entrar</button></form><details><summary>Criar uma conta</summary><form id="cadastro"><label>Nome<input id="nome" required maxlength="100" autocomplete="name"></label><label>Email<input id="novoEmail" type="email" required maxlength="200" autocomplete="email"></label><label>Senha<input id="novaSenha" type="password" required minlength="8" maxlength="72" autocomplete="new-password"></label><button>Cadastrar</button></form></details></section>
-<div id="sistema" hidden><p id="usuario"></p><button id="sair">Sair</button><div class="grid"><section><h2>Novo modelo</h2><form id="modelo"><label>Nome<input id="modeloNome" required maxlength="100"></label><label>Conteúdo<textarea id="modeloConteudo" required maxlength="20000" rows="5"></textarea></label><button>Cadastrar modelo</button></form><form id="revisao"><label>Modelo para revisar<select id="modeloRevisao" required></select></label><label>Novo conteúdo<textarea id="revisaoConteudo" required maxlength="20000"></textarea></label><button>Publicar nova versão</button></form></section><section><h2>Novo documento</h2><form id="documento"><label>Título<input id="titulo" required maxlength="150"></label><label>Modelo<select id="modelos" required></select></label><label>Tipo<select id="tipo"><option value="RELATORIO">Relatório</option><option value="CONTRATO">Contrato</option></select></label><button>Criar documento</button></form></section></div><section><h2>Meus documentos</h2><button id="atualizar">Atualizar lista</button><ul id="documentos"></ul></section>
-<section><h2>Acessar documento compartilhado</h2><form id="compartilhado"><label>Código do documento<input id="codigo" required></label><button>Abrir</button></form><button id="pedir">Solicitar leitura</button></section>
-<section id="detalhe" hidden><h2 id="detalheTitulo"></h2><pre id="conteudo"></pre>
-<button id="baixarTxt">Baixar TXT</button><button id="baixarPdf">Baixar PDF</button>
-<p id="compartilhar" hidden></p>
-<form id="editar" hidden><label>Título<input id="editarTitulo" required maxlength="150"></label><label>Conteúdo<textarea id="editarConteudo" required maxlength="21000" rows="6"></textarea></label><button>Salvar alterações</button></form>
-<div id="gestao" hidden><h3>Solicitações de leitura</h3><button id="verSolicitacoes">Ver solicitações</button><ul id="solicitacoes"></ul></div>
-</section>
-<section id="admin" hidden><h2>Administração de usuários</h2><button id="verUsuarios">Listar usuários</button><ul id="usuarios"></ul></section></div></main>
-<script src="/app.js" defer></script>
+<!doctype html>
+<html lang="pt-BR">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Gerenciamento de Documentos</title>
+  <style>
+    body {
+      font: 16px system-ui;
+      background: #f3f5f8;
+      color: #182638;
+      margin: 0;
+    }
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 32px;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    section {
+      background: white;
+      padding: 22px;
+      border: 1px solid #dce2ea;
+      border-radius: 8px;
+      margin: 18px 0;
+    }
+    label {
+      display: block;
+      margin: 10px 0;
+    }
+    input,
+    textarea,
+    select {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #bac5d3;
+      border-radius: 4px;
+      font: inherit;
+    }
+    button {
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 4px;
+      background: #244f86;
+      color: white;
+      cursor: pointer;
+      margin: 8px 6px 0 0;
+    }
+    button:disabled {
+      opacity: 0.5;
+    }
+    pre {
+      white-space: pre-wrap;
+      background: #f3f5f8;
+      padding: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    #mensagem {
+      min-height: 24px;
+      white-space: pre-wrap;
+    }
+    li {
+      margin: 12px 0;
+    }
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <main>
+    <h1>Gerenciamento de Documentos</h1>
+    <p>Crie documentos a partir de modelos, gerencie o acesso e exporte em TXT ou PDF.</p>
+    <p><a href="http://localhost:8761" target="_blank" rel="noopener">Abrir painel Eureka</a></p>
+    <p id="mensagem" role="status" aria-live="polite"></p>
+    <section id="autenticacao">
+      <h2>Acessar sistema</h2>
+      <form id="login">
+        <label
+          >Email<input
+            id="email"
+            type="email"
+            required
+            maxlength="200"
+            autocomplete="username" /></label
+        ><label
+          >Senha<input
+            id="senha"
+            type="password"
+            required
+            minlength="8"
+            maxlength="72"
+            autocomplete="current-password" /></label
+        ><button>Entrar</button>
+      </form>
+      <details>
+        <summary>Criar uma conta</summary>
+        <form id="cadastro">
+          <label>Nome<input id="nome" required maxlength="100" autocomplete="name" /></label
+          ><label
+            >Email<input
+              id="novoEmail"
+              type="email"
+              required
+              maxlength="200"
+              autocomplete="email" /></label
+          ><label
+            >Senha<input
+              id="novaSenha"
+              type="password"
+              required
+              minlength="8"
+              maxlength="72"
+              autocomplete="new-password" /></label
+          ><button>Cadastrar</button>
+        </form>
+      </details>
+    </section>
+    <div id="sistema" hidden>
+      <p id="usuario"></p>
+      <button id="sair">Sair</button>
+      <div class="grid">
+        <section>
+          <h2>Novo modelo</h2>
+          <form id="modelo">
+            <label>Nome<input id="modeloNome" required maxlength="100" /></label
+            ><label
+              >Conteúdo<textarea
+                id="modeloConteudo"
+                required
+                maxlength="20000"
+                rows="5"
+              ></textarea></label
+            ><button>Cadastrar modelo</button>
+          </form>
+          <form id="revisao">
+            <label>Modelo para revisar<select id="modeloRevisao" required></select></label
+            ><label
+              >Novo conteúdo<textarea
+                id="revisaoConteudo"
+                required
+                maxlength="20000"
+              ></textarea></label
+            ><button>Publicar nova versão</button>
+          </form>
+        </section>
+        <section>
+          <h2>Novo documento</h2>
+          <form id="documento">
+            <label>Título<input id="titulo" required maxlength="150" /></label
+            ><label>Modelo<select id="modelos" required></select></label
+            ><label
+              >Tipo<select id="tipo">
+                <option value="RELATORIO">Relatório</option>
+                <option value="CONTRATO">Contrato</option>
+              </select></label
+            ><button>Criar documento</button>
+          </form>
+        </section>
+      </div>
+      <section>
+        <h2>Meus documentos</h2>
+        <button id="atualizar">Atualizar lista</button>
+        <ul id="documentos"></ul>
+      </section>
+      <section>
+        <h2>Acessar documento compartilhado</h2>
+        <form id="compartilhado">
+          <label>Código do documento<input id="codigo" required /></label><button>Abrir</button>
+        </form>
+        <button id="pedir">Solicitar leitura</button>
+      </section>
+      <section id="detalhe" hidden>
+        <h2 id="detalheTitulo"></h2>
+        <pre id="conteudo"></pre>
+        <button id="baixarTxt">Baixar TXT</button><button id="baixarPdf">Baixar PDF</button>
+        <p id="compartilhar" hidden></p>
+        <form id="editar" hidden>
+          <label>Título<input id="editarTitulo" required maxlength="150" /></label
+          ><label
+            >Conteúdo<textarea
+              id="editarConteudo"
+              required
+              maxlength="21000"
+              rows="6"
+            ></textarea></label
+          ><button>Salvar alterações</button>
+        </form>
+        <div id="gestao" hidden>
+          <h3>Solicitações de leitura</h3>
+          <button id="verSolicitacoes">Ver solicitações</button>
+          <ul id="solicitacoes"></ul>
+        </div>
+      </section>
+      <section id="admin" hidden>
+        <h2>Administração de usuários</h2>
+        <button id="verUsuarios">Listar usuários</button>
+        <ul id="usuarios"></ul>
+      </section>
+    </div>
+  </main>
+  <script src="/app.js" defer></script>
+</html>

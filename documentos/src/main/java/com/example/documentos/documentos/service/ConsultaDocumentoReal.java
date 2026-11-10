@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class ConsultaDocumentoReal implements ConsultaDocumento {
+
     private final DocumentoRepository repositorio;
 
     public ConsultaDocumentoReal(DocumentoRepository repositorio) {
@@ -16,7 +17,10 @@ public class ConsultaDocumentoReal implements ConsultaDocumento {
 
     @Override
     public Documento buscar(String id) {
-        return repositorio.buscar(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Documento não encontrado"));
+        return repositorio
+            .buscar(id)
+            .orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Documento não encontrado")
+            );
     }
 }

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1100" viewBox="0 0 1800 1100"><defs><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#324c5a" stroke-width="1.3"/></marker><marker id="t" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1,1 L11,6 L1,11 Z" fill="white" stroke="#324c5a" stroke-width="1.2"/></marker></defs><rect width="1800" height="1100" fill="white"/>
+<text x="900" y="44" font-family="Arial,sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#182e3b">Diagrama de Casos de Uso</text>
+<text x="900" y="80" font-family="Arial,sans-serif" font-size="22" font-weight="normal" text-anchor="middle" fill="#182e3b">Funcionalidades do sistema proposto e responsabilidades dos perfis</text>
+<rect x="300" y="120" width="1200" height="890" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="900" y="155" font-family="Arial,sans-serif" font-size="25" font-weight="bold" text-anchor="middle" fill="#182e3b">Sistema de Gerenciamento de Documentos</text>
+<g stroke="#324c5a" stroke-width="3" fill="none"><circle cx="110" cy="390" r="18"/><path d="M110,408 v50 M82,429 h56 M110,458 l-28,38 M110,458 l28,38"/></g>
+<text x="110" y="529" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">Usuário</text>
+<g stroke="#324c5a" stroke-width="3" fill="none"><circle cx="1690" cy="390" r="18"/><path d="M1690,408 v50 M1662,429 h56 M1690,458 l-28,38 M1690,458 l28,38"/></g>
+<text x="1690" y="529" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">Administrador</text>
+<ellipse cx="655.0" cy="229.0" rx="245.0" ry="39.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="655.0" y="224" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Autenticar-se</text>
+<polyline points="140,440 325,440 325,229 410,229" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<ellipse cx="655.0" cy="325.0" rx="245.0" ry="39.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="655.0" y="320" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Consultar modelos</text>
+<polyline points="140,440 325,440 325,325 410,325" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<ellipse cx="655.0" cy="421.0" rx="245.0" ry="39.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="655.0" y="416" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Criar documento a partir</text>
+<text x="655.0" y="444" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">de modelo</text>
+<polyline points="140,440 325,440 325,421 410,421" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<ellipse cx="655.0" cy="517.0" rx="245.0" ry="39.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="655.0" y="512" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Consultar e visualizar</text>
+<text x="655.0" y="540" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">documentos</text>
+<polyline points="140,440 325,440 325,517 410,517" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<ellipse cx="655.0" cy="613.0" rx="245.0" ry="39.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="655.0" y="608" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Editar documento</text>
+<polyline points="140,440 325,440 325,613 410,613" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<ellipse cx="655.0" cy="709.0" rx="245.0" ry="39.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="655.0" y="704" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Baixar documento</text>
+<polyline points="140,440 325,440 325,709 410,709" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<ellipse cx="655.0" cy="805.0" rx="245.0" ry="39.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="655.0" y="800" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Compartilhar documento</text>
+<polyline points="140,440 325,440 325,805 410,805" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<ellipse cx="655.0" cy="901.0" rx="245.0" ry="39.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="655.0" y="896" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Solicitar acesso</text>
+<polyline points="140,440 325,440 325,901 410,901" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<ellipse cx="1220.0" cy="320.0" rx="190.0" ry="50.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="1220.0" y="304" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Gerenciar modelos</text>
+<polyline points="1660,440 1460,440 1460,320 1410,320" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<ellipse cx="1220.0" cy="540.0" rx="190.0" ry="50.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="1220.0" y="524" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Aprovar ou rejeitar</text>
+<text x="1220.0" y="552" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">solicitação de acesso</text>
+<polyline points="1660,440 1460,440 1460,540 1410,540" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<ellipse cx="1220.0" cy="760.0" rx="190.0" ry="50.0" fill="#f5f8fa" stroke="#324c5a" stroke-width="1.7"/>
+<text x="1220.0" y="744" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">Gerenciar usuários</text>
+<text x="1220.0" y="772" font-family="Arial,sans-serif" font-size="23" font-weight="normal" text-anchor="middle" fill="#182e3b">e bloqueios</text>
+<polyline points="1660,440 1460,440 1460,760 1410,760" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" />
+<polyline points="1660,515 1660,1025 110,1025 110,540" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#t)" />
+<text x="900" y="1018" font-family="Arial,sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#182e3b">especialização de perfil</text>
+<text x="60" y="1073" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">O administrador herda os casos de uso do usuário. Cada operação continua sujeita à autenticação e à política do documento.</text>
+</svg>

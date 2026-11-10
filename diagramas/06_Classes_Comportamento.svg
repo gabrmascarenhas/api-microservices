@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1100" viewBox="0 0 1800 1100"><defs><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M1,1 L8,4.5 L1,8" fill="none" stroke="#324c5a" stroke-width="1.3"/></marker><marker id="t" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M1,1 L11,6 L1,11 Z" fill="white" stroke="#324c5a" stroke-width="1.2"/></marker></defs><rect width="1800" height="1100" fill="white"/>
+<text x="900" y="44" font-family="Arial,sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#182e3b">Diagrama de Classes dos Padrões Comportamentais</text>
+<text x="900" y="80" font-family="Arial,sans-serif" font-size="22" font-weight="normal" text-anchor="middle" fill="#182e3b">Recortes dos serviços Acesso e Documentos</text>
+<rect x="50" y="120" width="1050" height="905" fill="#f9fbfc" stroke="#6c8491" stroke-width="1.7" />
+<text x="75" y="151" font-family="Arial,sans-serif" font-size="25" font-weight="bold" text-anchor="start" fill="#182e3b">«microserviço» Acesso</text>
+<rect x="330" y="185" width="480" height="171" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="570.0" y="208" font-family="Arial,sans-serif" font-size="18" font-weight="normal" text-anchor="middle" fill="#182e3b">«Chain abstrato»</text>
+<text x="570.0" y="236" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">Handler</text>
+<path d="M330,250 H810" stroke="#6c8491"/>
+<text x="343" y="276" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">- proximo: Handler</text>
+<path d="M330,288 H810" stroke="#6c8491"/>
+<text x="343" y="314" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ verificar(contexto): Decisao</text>
+<text x="343" y="341" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ definirProximo(handler)</text>
+<rect x="80" y="410" width="290" height="84" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="225.0" y="439" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">ContextoHandler</text>
+<path d="M80,453 H370" stroke="#6c8491"/>
+<path d="M80,453 H370" stroke="#6c8491"/>
+<text x="93" y="479" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ verificar(contexto)</text>
+<polyline points="225,410 225,375 570,375 570,356" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#t)" />
+<rect x="410" y="410" width="290" height="84" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="555.0" y="439" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">BloqueioHandler</text>
+<path d="M410,453 H700" stroke="#6c8491"/>
+<path d="M410,453 H700" stroke="#6c8491"/>
+<text x="423" y="479" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ verificar(contexto)</text>
+<polyline points="555,410 555,375 570,375 570,356" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#t)" />
+<rect x="740" y="410" width="290" height="84" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="885.0" y="439" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">HorarioHandler</text>
+<path d="M740,453 H1030" stroke="#6c8491"/>
+<path d="M740,453 H1030" stroke="#6c8491"/>
+<text x="753" y="479" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ verificar(contexto)</text>
+<polyline points="885,410 885,375 570,375 570,356" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#t)" />
+<rect x="410" y="590" width="330" height="84" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="575.0" y="619" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">RegraAcessoHandler</text>
+<path d="M410,633 H740" stroke="#6c8491"/>
+<path d="M410,633 H740" stroke="#6c8491"/>
+<text x="423" y="659" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ verificar(contexto)</text>
+<polyline points="575,590 575,545 1030,545 1030,355 810,355 810,290" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#t)" />
+<rect x="80" y="805" width="350" height="106" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="255.0" y="828" font-family="Arial,sans-serif" font-size="18" font-weight="normal" text-anchor="middle" fill="#182e3b">«Interpreter interface»</text>
+<text x="255.0" y="856" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">Expressao</text>
+<path d="M80,870 H430" stroke="#6c8491"/>
+<path d="M80,870 H430" stroke="#6c8491"/>
+<text x="93" y="896" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ interpretar(c): boolean</text>
+<rect x="510" y="810" width="530" height="148" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="775.0" y="839" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">Expressoes de acesso</text>
+<path d="M510,853 H1040" stroke="#6c8491"/>
+<text x="523" y="879" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">Terminais: Dono, Perfil, Acao, Aprovado</text>
+<text x="523" y="905" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">Compostas: E, Ou, Nao</text>
+<path d="M510,917 H1040" stroke="#6c8491"/>
+<text x="523" y="943" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ interpretar(c): boolean</text>
+<polyline points="575,730 575,765 255,765 255,805" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" stroke-dasharray="7 5"/>
+<text x="390" y="754" font-family="Arial,sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#182e3b">usa</text>
+<polyline points="510,905 430,905" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#t)" stroke-dasharray="7 5"/>
+<rect x="1130" y="120" width="620" height="905" fill="#f9fbfc" stroke="#6c8491" stroke-width="1.7" />
+<text x="1155" y="151" font-family="Arial,sans-serif" font-size="25" font-weight="bold" text-anchor="start" fill="#182e3b">«microserviço» Documentos</text>
+<rect x="1190" y="200" width="500" height="122" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="1440.0" y="229" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">ExportadorDocumento</text>
+<path d="M1190,243 H1690" stroke="#6c8491"/>
+<text x="1203" y="269" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">- estrategia: EstrategiaExportacao</text>
+<path d="M1190,281 H1690" stroke="#6c8491"/>
+<text x="1203" y="307" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ exportar(doc, formato): bytes</text>
+<rect x="1190" y="450" width="500" height="106" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="1440.0" y="473" font-family="Arial,sans-serif" font-size="18" font-weight="normal" text-anchor="middle" fill="#182e3b">«Strategy interface»</text>
+<text x="1440.0" y="501" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">EstrategiaExportacao</text>
+<path d="M1190,515 H1690" stroke="#6c8491"/>
+<path d="M1190,515 H1690" stroke="#6c8491"/>
+<text x="1203" y="541" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ gerar(documento): bytes</text>
+<polyline points="1440,322 1440,450" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#a)" stroke-dasharray="7 5"/>
+<text x="1540" y="405" font-family="Arial,sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#182e3b">seleciona e usa</text>
+<rect x="1160" y="740" width="260" height="84" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="1290.0" y="769" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">ExportacaoTXT</text>
+<path d="M1160,783 H1420" stroke="#6c8491"/>
+<path d="M1160,783 H1420" stroke="#6c8491"/>
+<text x="1173" y="809" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ gerar(doc): bytes</text>
+<rect x="1460" y="740" width="260" height="84" fill="#fff" stroke="#6c8491" stroke-width="1.7" />
+<text x="1590.0" y="769" font-family="Arial,sans-serif" font-size="23" font-weight="bold" text-anchor="middle" fill="#182e3b">ExportacaoPDF</text>
+<path d="M1460,783 H1720" stroke="#6c8491"/>
+<path d="M1460,783 H1720" stroke="#6c8491"/>
+<text x="1473" y="809" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">+ gerar(doc): bytes</text>
+<polyline points="1290,740 1290,675 1440,675 1440,556" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#t)" stroke-dasharray="7 5"/>
+<polyline points="1590,740 1590,675 1440,675 1440,556" stroke="#324c5a" stroke-width="2" fill="none" marker-end="url(#t)" stroke-dasharray="7 5"/>
+<text x="1440" y="940" font-family="Arial,sans-serif" font-size="22" font-weight="normal" text-anchor="middle" fill="#182e3b">A exportação ocorre após autorização.</text>
+<text x="60" y="1073" font-family="Arial,sans-serif" font-size="20" font-weight="normal" text-anchor="start" fill="#182e3b">As classes Expressoes de acesso resumem implementações concretas de Expressao. Cada elo mantém seu próprio contrato de validação.</text>
+</svg>

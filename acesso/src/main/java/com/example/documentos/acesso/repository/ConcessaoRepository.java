@@ -10,18 +10,33 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ConcessaoRepository {
-    public record Solicitacao(String documentoId, String proprietarioId, String solicitanteId,
-                              String status, Instant atualizadaEm) {}
+
+    public record Solicitacao(
+        String documentoId,
+        String proprietarioId,
+        String solicitanteId,
+        String status,
+        Instant atualizadaEm
+    ) {}
+
     private record Chave(String documento, String solicitante) {}
+
     private final Map<Chave, Solicitacao> dados = new HashMap<>();
     private final ArquivoRegistros<Solicitacao> arquivo;
 
-    public ConcessaoRepository(ObjectMapper mapper, @Value("${app.data-dir:.dados/acesso}") String pasta) {
+    public ConcessaoRepository(
+        ObjectMapper mapper,
+        @Value("${app.data-dir:.dados/acesso}") String pasta
+    ) {
         arquivo = new ArquivoRegistros<>(mapper, pasta, "concessoes.json", Solicitacao.class);
         for (var item : arquivo.ler()) dados.put(chave(item), item);
     }
 
-    public synchronized Solicitacao solicitar(String documento, String proprietario, String usuario) {
+    public synchronized Solicitacao solicitar(
+        String documento,
+        String proprietario,
+        String usuario
+    ) {
         var chave = new Chave(documento, usuario);
         var anterior = dados.get(chave);
         if (anterior != null && !"RECUSADA".equals(anterior.status())) return anterior;
@@ -31,13 +46,24 @@ public class ConcessaoRepository {
     public synchronized Solicitacao decidir(String documento, String usuario, boolean aprovar) {
         var anterior = dados.get(new Chave(documento, usuario));
         if (anterior == null) return null;
-        return salvar(new Solicitacao(documento, anterior.proprietarioId(), usuario,
-                aprovar ? "APROVADA" : "RECUSADA", Instant.now()));
+        return salvar(
+            new Solicitacao(
+                documento,
+                anterior.proprietarioId(),
+                usuario,
+                aprovar ? "APROVADA" : "RECUSADA",
+                Instant.now()
+            )
+        );
     }
 
     public synchronized List<Solicitacao> listar(String documento) {
-        return dados.values().stream().filter(item -> item.documentoId().equals(documento))
-                .sorted(java.util.Comparator.comparing(Solicitacao::atualizadaEm)).toList();
+        return dados
+            .values()
+            .stream()
+            .filter(item -> item.documentoId().equals(documento))
+            .sorted(java.util.Comparator.comparing(Solicitacao::atualizadaEm))
+            .toList();
     }
 
     public synchronized boolean permiteLeitura(String documento, String usuario) {

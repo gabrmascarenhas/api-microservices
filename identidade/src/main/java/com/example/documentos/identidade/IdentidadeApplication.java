@@ -1,5 +1,12 @@
 package com.example.documentos.identidade;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @SpringBootApplication
-public class IdentidadeApplication { public static void main(String[] args) { SpringApplication.run(IdentidadeApplication.class,args); } }
+public class IdentidadeApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(IdentidadeApplication.class, args);
+    }
+}

@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 public final class DocumentoBuilder {
+
     private final PrototipoDocumento.Rascunho rascunho;
     private final String proprietario;
     private String titulo;
@@ -30,7 +31,14 @@ public final class DocumentoBuilder {
         if (titulo == null || titulo.isBlank()) {
             throw new IllegalStateException("O documento precisa de um título");
         }
-        return new Documento(UUID.randomUUID().toString(), titulo, conteudo, proprietario,
-                rascunho.modeloId(), rascunho.modeloVersao(), Instant.now());
+        return new Documento(
+            UUID.randomUUID().toString(),
+            titulo,
+            conteudo,
+            proprietario,
+            rascunho.modeloId(),
+            rascunho.modeloVersao(),
+            Instant.now()
+        );
     }
 }

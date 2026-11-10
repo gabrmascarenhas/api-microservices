@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class DocumentoProxy {
+
     private final ConsultaDocumentoReal consulta;
     private final ServiceClient cliente;
 
@@ -24,8 +25,13 @@ public class DocumentoProxy {
     private Documento autorizar(String id, String token, String acao) {
         cliente.user(token);
         var documento = consulta.buscar(id);
-        var resultado = cliente.call("http://acesso/interno/autorizar", HttpMethod.POST,
-                new Pedido(documento.id(), documento.proprietarioId(), acao), token, Resultado.class);
+        var resultado = cliente.call(
+            "http://acesso/interno/autorizar",
+            HttpMethod.POST,
+            new Pedido(documento.id(), documento.proprietarioId(), acao),
+            token,
+            Resultado.class
+        );
         if (!resultado.permitido()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acesso negado");
         }
@@ -33,5 +39,6 @@ public class DocumentoProxy {
     }
 
     private record Pedido(String documentoId, String proprietarioId, String acao) {}
+
     private record Resultado(boolean permitido, String motivo) {}
 }

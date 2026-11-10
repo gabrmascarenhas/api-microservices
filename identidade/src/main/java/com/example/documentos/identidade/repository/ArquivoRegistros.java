@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 final class ArquivoRegistros<T> {
+
     private final ObjectMapper mapper;
     private final Path arquivo;
     private final Class<T> tipo;
@@ -24,8 +25,10 @@ final class ArquivoRegistros<T> {
     List<T> ler() {
         if (Files.notExists(arquivo)) return new ArrayList<>();
         try {
-            return mapper.readValue(arquivo.toFile(),
-                    mapper.getTypeFactory().constructCollectionType(ArrayList.class, tipo));
+            return mapper.readValue(
+                arquivo.toFile(),
+                mapper.getTypeFactory().constructCollectionType(ArrayList.class, tipo)
+            );
         } catch (IOException e) {
             throw new UncheckedIOException("Não foi possível ler " + arquivo, e);
         }
@@ -37,8 +40,12 @@ final class ArquivoRegistros<T> {
             var temporario = Files.createTempFile(arquivo.getParent(), "registros-", ".tmp");
             try {
                 mapper.writeValue(temporario.toFile(), registros);
-                Files.move(temporario, arquivo, StandardCopyOption.REPLACE_EXISTING,
-                        StandardCopyOption.ATOMIC_MOVE);
+                Files.move(
+                    temporario,
+                    arquivo,
+                    StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.ATOMIC_MOVE
+                );
             } finally {
                 Files.deleteIfExists(temporario);
             }

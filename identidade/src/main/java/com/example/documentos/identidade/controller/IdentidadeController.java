@@ -1,31 +1,66 @@
 package com.example.documentos.identidade.controller;
-import com.example.documentos.identidade.service.IdentidadeService;
+
 import com.example.documentos.identidade.client.InternalGuard;
 import com.example.documentos.identidade.dto.UsuarioDtos.*;
+import com.example.documentos.identidade.service.IdentidadeService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-@RestController public class IdentidadeController {
- private final IdentidadeService service;private final InternalGuard guard;
- public IdentidadeController(IdentidadeService s,InternalGuard g){service=s;guard=g;}
- @PostMapping("/api/identidade/usuarios") @ResponseStatus(org.springframework.http.HttpStatus.CREATED) public Saida cadastrar(@Valid @RequestBody Cadastro d){return service.cadastrar(d);}
- @PostMapping("/api/identidade/login") public Sessao login(@Valid @RequestBody Login d){return service.login(d);}
- @GetMapping("/api/identidade/me") public Saida me(@RequestHeader(value="Authorization",required=false) String token){return service.validar(token);}
- @GetMapping("/interno/sessao") public Saida sessao(@RequestHeader(value="X-Internal-Key",required=false) String key,@RequestHeader(value="Authorization",required=false) String token){guard.check(key);return service.validar(token);}
 
- @PostMapping("/api/identidade/sair")
- @ResponseStatus(org.springframework.http.HttpStatus.NO_CONTENT)
- public void sair(@RequestHeader(value="Authorization",required=false) String token) {
-     service.sair(token);
- }
+@RestController
+public class IdentidadeController {
 
- @GetMapping("/api/identidade/usuarios")
- public java.util.List<Saida> listar(@RequestHeader(value="Authorization",required=false) String token) {
-     return service.listar(token);
- }
+    private final IdentidadeService service;
+    private final InternalGuard guard;
 
- @PutMapping("/api/identidade/usuarios/{id}/bloqueio")
- public Saida bloquear(@RequestHeader(value="Authorization",required=false) String token,
-         @PathVariable String id,@RequestParam boolean bloqueado) {
-     return service.bloquear(token,id,bloqueado);
- }
+    public IdentidadeController(IdentidadeService s, InternalGuard g) {
+        service = s;
+        guard = g;
+    }
+
+    @PostMapping("/api/identidade/usuarios")
+    @ResponseStatus(org.springframework.http.HttpStatus.CREATED)
+    public Saida cadastrar(@Valid @RequestBody Cadastro d) {
+        return service.cadastrar(d);
+    }
+
+    @PostMapping("/api/identidade/login")
+    public Sessao login(@Valid @RequestBody Login d) {
+        return service.login(d);
+    }
+
+    @GetMapping("/api/identidade/me")
+    public Saida me(@RequestHeader(value = "Authorization", required = false) String token) {
+        return service.validar(token);
+    }
+
+    @GetMapping("/interno/sessao")
+    public Saida sessao(
+        @RequestHeader(value = "X-Internal-Key", required = false) String key,
+        @RequestHeader(value = "Authorization", required = false) String token
+    ) {
+        guard.check(key);
+        return service.validar(token);
+    }
+
+    @PostMapping("/api/identidade/sair")
+    @ResponseStatus(org.springframework.http.HttpStatus.NO_CONTENT)
+    public void sair(@RequestHeader(value = "Authorization", required = false) String token) {
+        service.sair(token);
+    }
+
+    @GetMapping("/api/identidade/usuarios")
+    public java.util.List<Saida> listar(
+        @RequestHeader(value = "Authorization", required = false) String token
+    ) {
+        return service.listar(token);
+    }
+
+    @PutMapping("/api/identidade/usuarios/{id}/bloqueio")
+    public Saida bloquear(
+        @RequestHeader(value = "Authorization", required = false) String token,
+        @PathVariable String id,
+        @RequestParam boolean bloqueado
+    ) {
+        return service.bloquear(token, id, bloqueado);
+    }
 }

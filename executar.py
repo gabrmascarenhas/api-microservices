@@ -28,27 +28,36 @@ APLICACOES = (
 
 def localizar_java() -> Path:
     """Localiza o Java e verifica a versão compatível com o projeto."""
+    candidatos = []
     java_home = os.environ.get("JAVA_HOME")
-    java = (
-        Path(java_home) / "bin" / "java"
-        if java_home
-        else Path(shutil.which("java") or "java")
-    )
+    if java_home:
+        candidatos.append(Path(java_home) / "bin" / "java")
 
-    resultado = subprocess.run(
-        [str(java), "--version"],
-        capture_output=True,
-        text=True,
-    )
-    versao = re.search(r"(?:openjdk|java) (\d+)", resultado.stdout)
-
-    if not versao or not 21 <= int(versao.group(1)) <= 25:
-        sys.exit(
-            "Configure JAVA_HOME com um JDK 21 a 25 antes de executar "
-            "(recomendado: JDK 21)."
+    java_home_macos = Path("/usr/libexec/java_home")
+    if java_home_macos.is_file():
+        instalado = subprocess.run(
+            [str(java_home_macos), "-F", "-v", "21"],
+            capture_output=True,
+            text=True,
         )
+        if instalado.returncode == 0:
+            candidatos.append(Path(instalado.stdout.strip()) / "bin" / "java")
 
-    return java
+    if java_path := shutil.which("java"):
+        candidatos.append(Path(java_path))
+
+    for java in candidatos:
+        try:
+            resultado = subprocess.run(
+                [str(java), "--version"], capture_output=True, text=True
+            )
+        except OSError:
+            continue
+        versao = re.search(r"(?:openjdk|java) (\d+)", resultado.stdout)
+        if resultado.returncode == 0 and versao and 21 <= int(versao.group(1)) <= 25:
+            return java.resolve()
+
+    sys.exit("Configure JAVA_HOME com um JDK 21 a 25 (recomendado: JDK 21).")
 
 
 def verificar_portas() -> None:
@@ -65,11 +74,12 @@ def verificar_portas() -> None:
                 )
 
 
-def compilar_projeto() -> None:
+def compilar_projeto(java: Path) -> None:
     """Usa o Maven Wrapper para compilar, executar testes e gerar os JARs."""
     subprocess.run(
         ["sh", str(RAIZ_PROJETO / "mvnw"), "-B", "-q", "package"],
         cwd=RAIZ_PROJETO,
+        env={**os.environ, "JAVA_HOME": str(java.parent.parent)},
         check=True,
     )
 
@@ -159,7 +169,7 @@ def main() -> None:
     try:
         # --sem-build permite reutilizar os JARs da última compilação.
         if "--sem-build" not in sys.argv:
-            compilar_projeto()
+            compilar_projeto(java)
 
         for nome, porta in APLICACOES:
             processo, arquivo_log = iniciar_aplicacao(java, nome)

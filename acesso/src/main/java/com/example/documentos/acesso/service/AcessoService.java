@@ -14,12 +14,17 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AcessoService {
+
     private final ServiceClient cliente;
     private final AcessoRepository auditoria;
     private final ConcessaoRepository concessoes;
     private final CadeiaAutorizacao cadeia;
 
-    public AcessoService(ServiceClient cliente, AcessoRepository auditoria, ConcessaoRepository concessoes) {
+    public AcessoService(
+        ServiceClient cliente,
+        AcessoRepository auditoria,
+        ConcessaoRepository concessoes
+    ) {
         this.cliente = cliente;
         this.auditoria = auditoria;
         this.concessoes = concessoes;
@@ -28,15 +33,24 @@ public class AcessoService {
 
     public Resultado avaliar(String token, Pedido pedido) {
         var decisao = cadeia.avaliar(token, pedido);
-        auditoria.registrar(new Decisao(decisao.usuario(), pedido.acao(),
-                decisao.resultado().permitido(), Instant.now()));
+        auditoria.registrar(
+            new Decisao(
+                decisao.usuario(),
+                pedido.acao(),
+                decisao.resultado().permitido(),
+                Instant.now()
+            )
+        );
         return decisao.resultado();
     }
 
     public Solicitacao solicitar(String token, String documento, String proprietario) {
         var usuario = cliente.user(token);
         if (usuario.equals(proprietario)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "O proprietário já possui acesso");
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "O proprietário já possui acesso"
+            );
         }
         return concessoes.solicitar(documento, proprietario, usuario);
     }
@@ -46,18 +60,29 @@ public class AcessoService {
         return concessoes.listar(documento);
     }
 
-    public Solicitacao decidir(String token, String documento, String proprietario,
-                               String solicitante, boolean aprovar) {
+    public Solicitacao decidir(
+        String token,
+        String documento,
+        String proprietario,
+        String solicitante,
+        boolean aprovar
+    ) {
         exigirResponsavel(token, proprietario);
         var decisao = concessoes.decidir(documento, solicitante, aprovar);
-        if (decisao == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Solicitação não encontrada");
+        if (decisao == null) throw new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Solicitação não encontrada"
+        );
         return decisao;
     }
 
     private void exigirResponsavel(String token, String proprietario) {
         var usuario = cliente.usuario(token);
         if (!usuario.id().equals(proprietario) && !"ADMINISTRADOR".equals(usuario.perfil())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Somente o proprietário ou administrador decide o acesso");
+            throw new ResponseStatusException(
+                HttpStatus.FORBIDDEN,
+                "Somente o proprietário ou administrador decide o acesso"
+            );
         }
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 /** Fachada das operações de criação, consulta, edição e exportação. */
 @Service
 public class DocumentoService {
+
     private final DocumentoRepository repositorio;
     private final ServiceClient cliente;
     private final CatalogoModelos catalogo;
@@ -26,9 +27,15 @@ public class DocumentoService {
     private final ExportacaoTxt txt;
     private final ExportacaoPdf pdf;
 
-    public DocumentoService(DocumentoRepository repositorio, ServiceClient cliente,
-            CatalogoModelos catalogo, DocumentoProxy proxy, ConsultaDocumentoReal consulta,
-            ExportacaoTxt txt, ExportacaoPdf pdf) {
+    public DocumentoService(
+        DocumentoRepository repositorio,
+        ServiceClient cliente,
+        CatalogoModelos catalogo,
+        DocumentoProxy proxy,
+        ConsultaDocumentoReal consulta,
+        ExportacaoTxt txt,
+        ExportacaoPdf pdf
+    ) {
         this.repositorio = repositorio;
         this.cliente = cliente;
         this.catalogo = catalogo;
@@ -41,7 +48,11 @@ public class DocumentoService {
     public Saida criar(String token, Entrada entrada) {
         var usuario = cliente.user(token);
         var modelo = catalogo.buscar(entrada.modeloId(), token);
-        var documento = CriadorDocumento.para(entrada.tipo()).criar(modelo, entrada.titulo(), usuario);
+        var documento = CriadorDocumento.para(entrada.tipo()).criar(
+            modelo,
+            entrada.titulo(),
+            usuario
+        );
         repositorio.salvar(documento);
         return saida(documento);
     }
@@ -56,8 +67,15 @@ public class DocumentoService {
 
     public Saida editar(String token, String id, Edicao entrada) {
         var anterior = proxy.para(token, "EDITAR").buscar(id);
-        var documento = new Documento(id, entrada.titulo().strip(), entrada.conteudo(),
-                anterior.proprietarioId(), anterior.modeloId(), anterior.modeloVersao(), anterior.criadoEm());
+        var documento = new Documento(
+            id,
+            entrada.titulo().strip(),
+            entrada.conteudo(),
+            anterior.proprietarioId(),
+            anterior.modeloId(),
+            anterior.modeloVersao(),
+            anterior.criadoEm()
+        );
         repositorio.salvar(documento);
         return saida(documento);
     }
@@ -71,17 +89,27 @@ public class DocumentoService {
         return estrategia.exportar(proxy.para(token, "LER").buscar(id));
     }
 
-
     public Object solicitacao(String token, String id, String operacao) {
         cliente.user(token);
         var documento = consulta.buscar(id);
-        return cliente.call("http://acesso/interno/documentos/" + documento.id() + "/" + operacao,
-                org.springframework.http.HttpMethod.POST,
-                java.util.Map.of("proprietarioId", documento.proprietarioId()), token, Object.class);
+        return cliente.call(
+            "http://acesso/interno/documentos/" + documento.id() + "/" + operacao,
+            org.springframework.http.HttpMethod.POST,
+            java.util.Map.of("proprietarioId", documento.proprietarioId()),
+            token,
+            Object.class
+        );
     }
 
     private Saida saida(Documento d) {
-        return new Saida(d.id(), d.titulo(), d.conteudo(), d.proprietarioId(),
-                d.modeloId(), d.modeloVersao(), d.criadoEm());
+        return new Saida(
+            d.id(),
+            d.titulo(),
+            d.conteudo(),
+            d.proprietarioId(),
+            d.modeloId(),
+            d.modeloVersao(),
+            d.criadoEm()
+        );
     }
 }

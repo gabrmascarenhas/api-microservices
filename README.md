@@ -27,14 +27,14 @@ flowchart LR
 
 O Gateway é a entrada das APIs públicas. O Eureka mantém o registro dos quatro serviços e do Gateway; as requisições de negócio seguem diretamente para os serviços descobertos. As rotas internas de validação de sessão e autorização não são expostas pelo Gateway.
 
-| Pasta | Aplicação | Porta local | Responsabilidade |
-| --- | --- | --- | --- |
-| `eureka-server` | Eureka Server | 8761 | Registro e descoberta |
-| `gateway` | Gateway | 8080 | Rotas públicas e interface HTML |
-| `identidade` | Identidade | 8661 | Usuários, senhas BCrypt e sessões |
-| `modelos` | Modelos | 8662 | Cadastro e consulta do catálogo de modelos |
-| `documentos` | Documentos | 8663 | Criação e consulta de documentos pessoais |
-| `acesso` | Acesso | 8664 | Autorização pela propriedade do documento |
+| Pasta           | Aplicação     | Porta local | Responsabilidade                           |
+| --------------- | ------------- | ----------- | ------------------------------------------ |
+| `eureka-server` | Eureka Server | 8761        | Registro e descoberta                      |
+| `gateway`       | Gateway       | 8080        | Rotas públicas e interface HTML            |
+| `identidade`    | Identidade    | 8661        | Usuários, senhas BCrypt e sessões          |
+| `modelos`       | Modelos       | 8662        | Cadastro e consulta do catálogo de modelos |
+| `documentos`    | Documentos    | 8663        | Criação e consulta de documentos pessoais  |
+| `acesso`        | Acesso        | 8664        | Autorização pela propriedade do documento  |
 
 Cada serviço de domínio possui camadas `controller`, `service`, `repository`, `model` e `dto`, além de clientes HTTP e configuração. Cada serviço de domínio possui seu próprio arquivo de dados. Sessões ficam em memória.
 
@@ -93,29 +93,29 @@ Não há credenciais predefinidas. O conteúdo do modelo é copiado para o docum
 
 Todas as rotas abaixo são acessadas pelo Gateway na porta **8080**.
 
-| Método | Rota | Operação | Sessão |
-| --- | --- | --- | --- |
-| POST | `/api/identidade/usuarios` | Cadastrar usuário | Não |
-| POST | `/api/identidade/login` | Obter token de sessão | Não |
-| GET | `/api/identidade/me` | Consultar usuário autenticado | Sim |
-| POST | `/api/modelos` | Cadastrar modelo | Sim |
-| GET | `/api/modelos` | Listar catálogo | Sim |
-| GET | `/api/modelos/{id}` | Consultar modelo | Sim |
-| POST | `/api/documentos` | Criar documento a partir de um modelo | Sim |
-| GET | `/api/documentos` | Listar documentos do usuário | Sim |
-| GET | `/api/documentos/{id}` | Consultar documento com autorização | Sim |
-| GET | `/api/acesso/status` | Descrever a regra de leitura e edição | Não |
+| Método | Rota                       | Operação                              | Sessão |
+| ------ | -------------------------- | ------------------------------------- | ------ |
+| POST   | `/api/identidade/usuarios` | Cadastrar usuário                     | Não    |
+| POST   | `/api/identidade/login`    | Obter token de sessão                 | Não    |
+| GET    | `/api/identidade/me`       | Consultar usuário autenticado         | Sim    |
+| POST   | `/api/modelos`             | Cadastrar modelo                      | Sim    |
+| GET    | `/api/modelos`             | Listar catálogo                       | Sim    |
+| GET    | `/api/modelos/{id}`        | Consultar modelo                      | Sim    |
+| POST   | `/api/documentos`          | Criar documento a partir de um modelo | Sim    |
+| GET    | `/api/documentos`          | Listar documentos do usuário          | Sim    |
+| GET    | `/api/documentos/{id}`     | Consultar documento com autorização   | Sim    |
+| GET    | `/api/acesso/status`       | Descrever a regra de leitura e edição | Não    |
 
 Cadastro de usuário:
 
 ```json
-{"nome":"Gabriel","email":"gabriel@example.com","senha":"UmaSenhaDeTeste123!"}
+{ "nome": "Gabriel", "email": "gabriel@example.com", "senha": "UmaSenhaDeTeste123!" }
 ```
 
 Login:
 
 ```json
-{"email":"gabriel@example.com","senha":"UmaSenhaDeTeste123!"}
+{ "email": "gabriel@example.com", "senha": "UmaSenhaDeTeste123!" }
 ```
 
 Nas operações autenticadas, envie o token retornado no login:
@@ -127,13 +127,13 @@ Authorization: Bearer SEU_TOKEN
 Cadastro de modelo:
 
 ```json
-{"nome":"Relatório","conteudo":"Conteúdo inicial do relatório."}
+{ "nome": "Relatório", "conteudo": "Conteúdo inicial do relatório." }
 ```
 
 Criação de documento:
 
 ```json
-{"titulo":"Meu relatório","modeloId":"ID_RETORNADO_NO_CADASTRO_DO_MODELO"}
+{ "titulo": "Meu relatório", "modeloId": "ID_RETORNADO_NO_CADASTRO_DO_MODELO" }
 ```
 
 Respostas: `201` no cadastro, `400` para dados inválidos, `401` para sessão ou credenciais inválidas, `403` para acesso negado, `404` para recurso inexistente, `409` para duplicidade e `503` quando uma dependência chamada pelo cliente HTTP está indisponível.
@@ -175,13 +175,13 @@ A configuração Docker está disponível; a validação integrada desta versão
 
 ## Configuração
 
-| Variável | Uso local padrão | Finalidade |
-| --- | --- | --- |
-| `JAVA_HOME` | JDK configurado no ambiente | Compilação e execução local |
-| `EUREKA_URL` | `http://localhost:8761/eureka/` | Endereço do registro |
-| `SERVICE_HOST` | `localhost` | Host anunciado no Eureka |
-| `BIND_ADDRESS` | `127.0.0.1` | Interface de escuta |
-| `INTERNAL_KEY` | Chave demonstrativa local | Autenticação entre endpoints internos |
+| Variável       | Uso local padrão                | Finalidade                            |
+| -------------- | ------------------------------- | ------------------------------------- |
+| `JAVA_HOME`    | JDK configurado no ambiente     | Compilação e execução local           |
+| `EUREKA_URL`   | `http://localhost:8761/eureka/` | Endereço do registro                  |
+| `SERVICE_HOST` | `localhost`                     | Host anunciado no Eureka              |
+| `BIND_ADDRESS` | `127.0.0.1`                     | Interface de escuta                   |
+| `INTERNAL_KEY` | Chave demonstrativa local       | Autenticação entre endpoints internos |
 
 O Compose exige `INTERNAL_KEY` e configura os nomes dos serviços na rede Docker. A chave demonstrativa padrão existe para execução local; use uma chave própria se alterar o ambiente.
 
@@ -193,17 +193,17 @@ baixar TXT ou PDF e compartilhar o código do documento. Um segundo usuário sol
 pelo código. O proprietário ou o administrador aprova ou recusa a solicitação.
 A leitura concedida permite consulta e download. A edição exige que o usuário seja proprietário.
 
-| Padrão | Código e operação |
-| --- | --- |
-| Prototype | `PrototipoDocumento.copiar` cria um rascunho independente do modelo. |
-| Builder | `DocumentoBuilder` monta o documento com título, conteúdo e dados de origem. |
-| Factory Method | `CriadorDocumento.preparar` é especializado para relatório e contrato. O contrato inclui campos de assinatura. |
-| Adapter | `ModeloHttpAdapter` converte a resposta REST de Modelos no protótipo esperado pela criação. |
-| Proxy | `DocumentoProxy` fornece consulta protegida pelo contrato `ConsultaDocumento` para leitura, edição e exportação. |
-| Facade | `DocumentoService` coordena catálogo, criação, consulta protegida e exportação para o controller. |
-| Chain of Responsibility | `CadeiaAutorizacao` encadeia autenticação, validação da ação e avaliação da política. |
-| Interpreter | `PoliticaAcesso` avalia expressões de proprietário e concessão combinadas por OU. |
-| Strategy | `EstrategiaExportacao` seleciona TXT ou PDF na operação de download. |
+| Padrão                  | Código e operação                                                                                                |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Prototype               | `PrototipoDocumento.copiar` cria um rascunho independente do modelo.                                             |
+| Builder                 | `DocumentoBuilder` monta o documento com título, conteúdo e dados de origem.                                     |
+| Factory Method          | `CriadorDocumento.preparar` é especializado para relatório e contrato. O contrato inclui campos de assinatura.   |
+| Adapter                 | `ModeloHttpAdapter` converte a resposta REST de Modelos no protótipo esperado pela criação.                      |
+| Proxy                   | `DocumentoProxy` fornece consulta protegida pelo contrato `ConsultaDocumento` para leitura, edição e exportação. |
+| Facade                  | `DocumentoService` coordena catálogo, criação, consulta protegida e exportação para o controller.                |
+| Chain of Responsibility | `CadeiaAutorizacao` encadeia autenticação, validação da ação e avaliação da política.                            |
+| Interpreter             | `PoliticaAcesso` avalia expressões de proprietário e concessão combinadas por OU.                                |
+| Strategy                | `EstrategiaExportacao` seleciona TXT ou PDF na operação de download.                                             |
 
 O perfil comum é criado pelo cadastro. Para habilitar a conta administrativa local, defina
 `ADMIN_EMAIL` e `ADMIN_SENHA` no ambiente antes da primeira inicialização. O administrador pode

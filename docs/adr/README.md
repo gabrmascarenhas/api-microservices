@@ -2,13 +2,13 @@
 
 Os ADRs registram escolhas já implementadas na versão atual, seus motivos, alternativas e consequências. O status **Adotado no MVP** descreve o estado do código; não representa uma ata de votação da equipe nem a conclusão dos requisitos futuros.
 
-| Registro | Decisão | Situação |
-| --- | --- | --- |
-| [ADR-001](001-divisao-em-microservicos.md) | Divisão do domínio em quatro microserviços | Adotado no MVP |
-| [ADR-002](002-gateway-e-eureka.md) | Entrada pelo Gateway e descoberta pelo Eureka | Adotado no MVP |
-| [ADR-003](003-arquitetura-em-camadas-e-dtos.md) | Organização interna em camadas e contratos com DTOs | Adotado no MVP |
-| [ADR-004](004-armazenamento-em-memoria-no-mvp.md) | Armazenamento em memória na demonstração inicial | Substituído pelo ADR-006 |
-| [ADR-005](005-autenticacao-e-autorizacao-do-mvp.md) | Sessão temporária e autorização pelo proprietário | Atualizado pelo ADR-006 |
+| Registro                                            | Decisão                                             | Situação                 |
+| --------------------------------------------------- | --------------------------------------------------- | ------------------------ |
+| [ADR-001](001-divisao-em-microservicos.md)          | Divisão do domínio em quatro microserviços          | Adotado no MVP           |
+| [ADR-002](002-gateway-e-eureka.md)                  | Entrada pelo Gateway e descoberta pelo Eureka       | Adotado no MVP           |
+| [ADR-003](003-arquitetura-em-camadas-e-dtos.md)     | Organização interna em camadas e contratos com DTOs | Adotado no MVP           |
+| [ADR-004](004-armazenamento-em-memoria-no-mvp.md)   | Armazenamento em memória na demonstração inicial    | Substituído pelo ADR-006 |
+| [ADR-005](005-autenticacao-e-autorizacao-do-mvp.md) | Sessão temporária e autorização pelo proprietário   | Atualizado pelo ADR-006  |
 
 | [ADR-006](006-persistencia-e-fluxos-da-demonstracao.md) | Persistência local, concessão de leitura e bloqueio de conta | Adotado na demonstração |
 

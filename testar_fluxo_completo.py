@@ -13,13 +13,18 @@ SENHA = "Senha-de-teste-123"
 
 
 def cadastrar(email):
-    return requisicao("/api/identidade/usuarios", "POST",
-                      {"nome": "Usuário de teste", "email": email, "senha": SENHA},
-                      status_esperado=201)
+    return requisicao(
+        "/api/identidade/usuarios",
+        "POST",
+        {"nome": "Usuário de teste", "email": email, "senha": SENHA},
+        status_esperado=201,
+    )
 
 
 def login(email, senha=SENHA):
-    return requisicao("/api/identidade/login", "POST", {"email": email, "senha": senha})["token"]
+    return requisicao(
+        "/api/identidade/login", "POST", {"email": email, "senha": senha}
+    )["token"]
 
 
 def baixar(caminho, formato, token):
@@ -39,18 +44,28 @@ def validar_fluxo(estado):
     cadastrar(email_dono)
     leitor = cadastrar(email_leitor)
     dono, outro = login(email_dono), login(email_leitor)
-    modelo = requisicao("/api/modelos", "POST",
-                        {"nome": f"Modelo {identificador}", "conteudo": "Versão inicial"},
-                        dono, 201)
+    modelo = requisicao(
+        "/api/modelos",
+        "POST",
+        {"nome": f"Modelo {identificador}", "conteudo": "Versão inicial"},
+        dono,
+        201,
+    )
     entrada = {"titulo": "Relatório de demonstração", "modeloId": modelo["id"]}
-    relatorio = requisicao("/api/documentos", "POST", {**entrada, "tipo": "RELATORIO"}, dono, 201)
-    contrato = requisicao("/api/documentos", "POST", {**entrada, "tipo": "CONTRATO"}, dono, 201)
+    relatorio = requisicao(
+        "/api/documentos", "POST", {**entrada, "tipo": "RELATORIO"}, dono, 201
+    )
+    contrato = requisicao(
+        "/api/documentos", "POST", {**entrada, "tipo": "CONTRATO"}, dono, 201
+    )
     assert relatorio["conteudo"] == "Versão inicial"
     assert contrato["conteudo"].startswith("Versão inicial")
     assert "Assinaturas:" in contrato["conteudo"]
     assert contrato["id"] != relatorio["id"]
 
-    revisao = requisicao(f"/api/modelos/{modelo['id']}", "PUT", {"conteudo": "Versão revisada"}, dono)
+    revisao = requisicao(
+        f"/api/modelos/{modelo['id']}", "PUT", {"conteudo": "Versão revisada"}, dono
+    )
     assert revisao["versao"] == 2
     novo = requisicao("/api/documentos", "POST", entrada, dono, 201)
     assert novo["modeloVersao"] == 2 and novo["conteudo"] == "Versão revisada"
@@ -60,7 +75,10 @@ def validar_fluxo(estado):
     requisicao(caminho + "/exportar?formato=pdf", token=outro, status_esperado=403)
     pedido = requisicao(caminho + "/solicitacoes", "POST", token=outro)
     assert pedido["status"] == "PENDENTE"
-    assert requisicao(caminho + "/solicitacoes", token=dono)[0]["solicitanteId"] == leitor["id"]
+    assert (
+        requisicao(caminho + "/solicitacoes", token=dono)[0]["solicitanteId"]
+        == leitor["id"]
+    )
     decisao = f"{caminho}/solicitacoes/{leitor['id']}"
     requisicao(decisao + "?aprovar=true", "PUT", token=outro, status_esperado=403)
     requisicao(decisao + "?aprovar=true", "PUT", token=dono)
@@ -86,13 +104,25 @@ def validar_fluxo(estado):
         requisicao(bloqueio + "?bloqueado=true", "PUT", token=admin)
         requisicao(caminho, token=outro, status_esperado=401)
         requisicao(bloqueio + "?bloqueado=false", "PUT", token=admin)
-        assert requisicao(caminho, token=login(email_leitor))["conteudo"] == edicao["conteudo"]
+        assert (
+            requisicao(caminho, token=login(email_leitor))["conteudo"]
+            == edicao["conteudo"]
+        )
         print("OK: perfil administrativo, bloqueio e invalidação da sessão anterior.")
 
     requisicao("/api/identidade/sair", "POST", token=dono, status_esperado=204)
     requisicao(caminho, token=dono, status_esperado=401)
-    estado.write_text(json.dumps({"dono": email_dono, "leitor": email_leitor, "documento": caminho,
-                                  "modelo": modelo["id"], "conteudo": edicao["conteudo"]}))
+    estado.write_text(
+        json.dumps(
+            {
+                "dono": email_dono,
+                "leitor": email_leitor,
+                "documento": caminho,
+                "modelo": modelo["id"],
+                "conteudo": edicao["conteudo"],
+            }
+        )
+    )
     print("OK: criação por tipo, versão de modelo, edição, acesso, TXT/PDF e logout.")
 
 

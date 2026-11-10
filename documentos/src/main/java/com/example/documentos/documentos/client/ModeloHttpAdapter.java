@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ModeloHttpAdapter implements CatalogoModelos {
+
     private final ServiceClient cliente;
 
     public ModeloHttpAdapter(ServiceClient cliente) {
@@ -14,9 +15,19 @@ public class ModeloHttpAdapter implements CatalogoModelos {
 
     @Override
     public PrototipoDocumento buscar(String id, String token) {
-        var modelo = cliente.call("http://modelos/api/modelos/" + id,
-                HttpMethod.GET, null, token, ModeloRemoto.class);
-        return new PrototipoDocumento(modelo.id(), modelo.nome(), modelo.conteudo(), modelo.versao());
+        var modelo = cliente.call(
+            "http://modelos/api/modelos/" + id,
+            HttpMethod.GET,
+            null,
+            token,
+            ModeloRemoto.class
+        );
+        return new PrototipoDocumento(
+            modelo.id(),
+            modelo.nome(),
+            modelo.conteudo(),
+            modelo.versao()
+        );
     }
 
     private record ModeloRemoto(String id, String nome, String conteudo, int versao) {}
